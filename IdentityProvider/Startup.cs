@@ -14,8 +14,8 @@ namespace IdentityProvider
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-
             // using local db (assumes Visual Studio has been installed)
+            const string connectionString = @"Data Source=(LocalDb)\MSSQLLocalDB;database=Test.IdentityServer.EntityFramework;trusted_connection=yes;";
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
 
             services.AddDbContext<ApplicationDbContext>(builder =>
@@ -120,7 +120,7 @@ namespace IdentityProvider
                             Id = testUser.SubjectId
                         };
 
-                        userManager.CreateAsync(identityUser, "Password123!").Wait();
+                        userManager.CreateAsync(identityUser, testUser.Password).Wait();
                         userManager.AddClaimsAsync(identityUser, testUser.Claims.ToList()).Wait();
                     }
                 }
