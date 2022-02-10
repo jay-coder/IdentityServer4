@@ -1,19 +1,27 @@
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace API
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
 
+            var audience = Configuration.GetValue<string>("IdentityServer:Audience");
+            var authority = Configuration.GetValue<string>("IdentityServer:Authority");
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
                 {
-                    options.Audience = "api1";
-                    options.Authority = "https://localhost:5000";
+                    options.Audience = audience;
+                    options.Authority = authority;
                 });
         }
 

@@ -17,6 +17,9 @@ FROM build AS publish
 RUN dotnet publish "Client.csproj" -c Release -o /app/publish
 
 FROM base AS final
+COPY ["./Certificates/is4-container-cert.crt", "/usr/local/share/ca-certificates/is4-container-cert.crt"]
+RUN chmod 644 /usr/local/share/ca-certificates/is4-container-cert.crt
+RUN update-ca-certificates
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "Client.dll"]

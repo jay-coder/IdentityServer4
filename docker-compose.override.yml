@@ -5,22 +5,27 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
+      - IdentityServer:Authority=https://localhost:5000
+      - IdentityServer:ContainerHost=https://is4
+      - APIServer:Host=https://api
       - ASPNETCORE_Kestrel__Certificates__Default__Password=P@ssword!
-      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/is4-container-cert.pfx
     ports:
       - 5002:443
     volumes:
-      - ~/.aspnet/https:/https:ro
+      - .\Certificates:/https/
   api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
+      - IdentityServer:Audience=api1
+      - IdentityServer:Authority=https://is4
       - ASPNETCORE_Kestrel__Certificates__Default__Password=P@ssword!
-      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/is4-container-cert.pfx
     ports:
       - 5001:443
     volumes:
-      - ~/.aspnet/https:/https:ro
+      - .\Certificates:/https/
 
   is4:
     environment:
@@ -28,8 +33,8 @@ services:
       - ASPNETCORE_URLS=https://+:443;http://+:80
       - ConnectionStrings:DefaultConnection=Server=db;Port=5432;Database=IS4Database;User Id=postgres;Password=P@ssword!
       - ASPNETCORE_Kestrel__Certificates__Default__Password=P@ssword!
-      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/is4-container-cert.pfx
     ports:
       - 5000:443
     volumes:
-      - ~/.aspnet/https:/https:ro
+      - .\Certificates:/https/
