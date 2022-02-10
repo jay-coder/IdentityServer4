@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: identity-core-client
+  labels:
+    app: identity-core-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: identity-core-client
+  template:
+    metadata:
+      labels:
+        app: identity-core-client
+    spec:
+      containers:
+      - name: identity-core-client
+        image: client:latest
+        imagePullPolicy: IfNotPresent
+        env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: Development
+            - name: ASPNETCORE_URLS
+              value: https://+:443
+            - name: IdentityServer__Authority
+              value: https://is4.local
+            - name: IdentityServer__ContainerHost
+              value: https://identity-core-is4-service.default.svc.cluster.local
+            - name: APIServer__Host
+              value: https://identity-core-api-service.default.svc.cluster.local
+            - name: ASPNETCORE_Kestrel__Certificates__Default__Password
+              value: P@ssword!
+            - name: ASPNETCORE_Kestrel__Certificates__Default__Path
+              value: ./is4-container-cert.pfx
+      
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: identity-core-client-service
+spec:
+  type: ClusterIP
+  ports:
+  - port: 443
+    targetPort: 443
+    protocol: TCP
+    name: https
+  selector:
+    app: identity-core-client

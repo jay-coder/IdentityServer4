@@ -9,7 +9,7 @@ namespace IdentityProvider
 {
     internal class Clients
     {
-        public static IEnumerable<Client> Get()
+        public static IEnumerable<Client> Get(string redirectUris)
         {
             return new List<Client>
             {
@@ -28,7 +28,7 @@ namespace IdentityProvider
                     ClientSecrets = new List<Secret> {new Secret("SuperSecretPassword".Sha256())}, // change me!
                     
                     AllowedGrantTypes = GrantTypes.Code,
-                    RedirectUris = new List<string> {"https://localhost:5002/signin-oidc"},
+                    RedirectUris = redirectUris.Split(',', System.StringSplitOptions.RemoveEmptyEntries),
                     AllowedScopes = new List<string>
                     {
                         IdentityServerConstants.StandardScopes.OpenId,

@@ -16,6 +16,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Certificates", "Certificate
 		Certificates\is4-container-cert.conf = Certificates\is4-container-cert.conf
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "K8S", "K8S", "{26C271FF-2D97-4072-9AE0-C3B73426ECC4}"
+	ProjectSection(SolutionItems) = preProject
+		K8S\api.yml = K8S\api.yml
+		K8S\client.yml = K8S\client.yml
+		K8S\ingress.yml = K8S\ingress.yml
+		K8S\is4.yml = K8S\is4.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

@@ -22,4 +22,5 @@ RUN chmod 644 /usr/local/share/ca-certificates/is4-container-cert.crt
 RUN update-ca-certificates
 WORKDIR /app
 COPY --from=publish /app/publish .
+COPY ["./Certificates/is4-container-cert.pfx", "./is4-container-cert.pfx"]
 ENTRYPOINT ["dotnet", "Client.dll"]
